@@ -8,6 +8,8 @@ const CommentSchema = mongoose.Schema({
     required: true // 必需
   },
   username: String
+}, {
+  timestamps: true
 })
 
 const Comment = mongoose.model('comment', CommentSchema)

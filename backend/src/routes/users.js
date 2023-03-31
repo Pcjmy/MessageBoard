@@ -1,14 +1,32 @@
 const router = require('koa-router')()
-const { register } = require('../controller/user')
+const { login, register } = require('../controller/user')
 
 router.prefix('/users')
 
-router.get('/', function (ctx, next) {
-  ctx.body = 'this is a users response!'
-})
+// 登录
+router.post('/login', async (ctx, nex) => {
+  // 获取登录信息
+  const { username, password } = ctx.request.body
+  // 验证登录
+  const res = await login(username, password)
+  if (res) {
+    // 登录成功
 
-router.get('/bar', function (ctx, next) {
-  ctx.body = 'this is a users/bar response'
+    // 设置session
+    ctx.session.userInfo = {
+      username
+    }
+
+    // 返回
+    ctx.body = {
+      errno: 0
+    }
+  } else {
+    // 登录失败
+    ctx.body = {
+      errno: -1
+    }
+  }
 })
 
 // 注册
